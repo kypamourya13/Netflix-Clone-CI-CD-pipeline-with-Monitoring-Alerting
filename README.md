@@ -84,7 +84,11 @@ sudo chmod 777 /var/run/docker.sock
 ```bash
 docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 docker ps
+
+- Sonarqube will be running on port 9000, To access this,
+<EC2 Public IP Address:9000>
 ```
+
 
 - 2C — Install Trivy
 ```bash
