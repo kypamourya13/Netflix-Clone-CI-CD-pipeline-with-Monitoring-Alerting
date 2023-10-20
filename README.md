@@ -490,27 +490,26 @@ http://<prometheus-grafana_ip>:9090/targets
 - **7C — Create a Job**
 - create a job as Netflix Name, select pipeline and click on Ok.
 
-# Step 8 ::
-- Configure Sonar Server in Manage Jenkins
-- Grab the Public IP Address of your EC2 Instance, Sonarqube works on Port 9000, so <Public IP>:9000. Goto your Sonarqube Server. Click on Administration → Security → Users → Click on Tokens and Update Token → Give it a name → and click on Generate Token
-- click on update Token
+# Step 8 :: Configure Sonar Server in Manage Jenkins
+- Grab the Public IP Address of your **Netflix-clone-project EC2 Instance**, Sonarqube works on Port 9000, so <Netflix_clone_project_Public_IP>:9000.
+- Goto your Sonarqube Server.
+- Click on Administration --> Security --> Users --> Click on Tokens and Update Token --> Give it a name --> and click on Generate Token
+- Click on update Token
 - Create a token with a name and generate
-- copy Token
-- Goto Jenkins Dashboard → Manage Jenkins → Credentials → Add Secret Text. It should look like this
-- You will this page once you click on create
-- Now, go to Dashboard → Manage Jenkins → System and Add like the below image.
+- Copy Token
+- Goto Jenkins Dashboard --> Manage Jenkins --> Credentials --> Add Secret Text
+- Now, go to Dashboard --> Manage Jenkins --> System and Add the details of Name, Server URL and Serber authentication token
 - Click on Apply and Save
-- The Configure System option is used in Jenkins to configure different server
-- Global Tool Configuration is used to configure different tools that we install using Plugins
-- We will install a sonar scanner in the tools.
-- In the Sonarqube Dashboard add a quality gate also
-- Administration--> Configuration-->Webhooks
+- The **Configure System option** is used in Jenkins to configure different server
+- **Global Tool Configuration** is used to configure different tools that we install using Plugins
+- We will install a sonar scanner in the tools
+- In the Sonarqube Dashboard add a quality gate also, Administration--> Configuration-->Webhooks
 - Click on Create
 - Add details
 
 ```bash
 #in url section of quality gate
-<http://jenkins-public-ip:8080>/sonarqube-webhook/
+<http://Netflix_clone_project_Public_IP:8080>/sonarqube-webhook/
 ```
 - Let's go to our Pipeline and add the script in our Pipeline Script.
 ```bash
@@ -570,17 +569,19 @@ pipeline{
 
 ```
 
-- Click on Build now, you will see the stage view like this
+- Click on Build now, and we should be able to see the pipeline which is started.
 - To see the report, you can go to Sonarqube Server and go to Projects.
 - You can see the report has been generated and the status shows as passed. You can see that there are 3.2k lines it scanned. To see a detailed report, you can go to issues.
 
-# Step 9 :
-- Install OWASP Dependency Check Plugins
-- GotoDashboard → Manage Jenkins → Plugins → OWASP Dependency-Check. Click on it and install it without restart.
+# Step 9 :: Install OWASP Dependency Check Plugins
+- Goto Dashboard --> Manage Jenkins --> Plugins --> OWASP Dependency-Check. Click on it and install it without restart.
 - First, we configured the Plugin and next, we had to configure the Tool
-- Goto Dashboard → Manage Jenkins → Tools →
-- Click on Apply and Save here.
-- Now go configure → Pipeline and add this stage to your pipeline and build.
+- Goto Dashboard --> Manage Jenkins --> Tools
+  - Add the Name for **Add Dependency-Check**
+  - Check the box for **Install automatically**
+  - Provide the Version
+- Click on Apply and Save.
+- Now go configure --> Pipeline and add this stage to your pipeline and build.
 
 ```bash
 stage('OWASP FS SCAN') {
@@ -596,14 +597,14 @@ stage('OWASP FS SCAN') {
         }
 ```
 
-
-
-# Step 10 :
-- Docker Image Build and Push
-- We need to install the Docker tool in our system, Goto Dashboard → Manage Plugins → Available plugins → Search for Docker and install these plugins
-- Docker, Docker Commons, Docker Pipeline, Docker API, docker-build-step
-- and click on install without restart
-- Now, goto Dashboard → Manage Jenkins → Tools →
+# Step 10 :: Docker Image Build and Push
+- We need to install the Docker tool in our system, Goto Dashboard --> Manage Plugins --> Available plugins --> Search for Docker and install these plugins
+  - Docker, Docker Commons, Docker Pipeline, Docker API, docker-build-step
+- And click on install without restart
+- Now, goto Dashboard --> Manage Jenkins --> Tools -->
+  - Add **Name** for the Docker section
+  - Check the box for **Install automatically**
+  - Docker version --> latest
 - Add DockerHub Username and Password under Global Credentials
 - Add this stage to Pipeline Script
 
@@ -627,7 +628,7 @@ stage("Docker Build & Push"){
 ```
 
 
-- When you log in to Dockerhub, you will see a new image is created
+- When you log in to Dockerhub, you will see a new image is created with the name **netflix**
 - Now Run the container to see if the game coming up or not by adding the below stage
 
 ```bash
@@ -639,11 +640,9 @@ stage('Deploy to container'){
 ```
 
 
-
-# Step 11 :
-- Kuberenetes Setup
-- Connect your machines to Putty or Mobaxtreme
-- Take-Two Ubuntu 20.04 instances one for k8s master and the other one for worker.
+# Step 11 :: Kuberenetes Setup
+- Connect your machines to Putty or Mobaxterm (Windows) or Terminal (MacOS)
+- Take-Two Ubuntu 20.04 EC2 instances one for K8s master and the other one for K8sworker.
 - Install Kubectl on Jenkins machine also.
 - Kubectl is to be installed on Jenkins also
 
@@ -704,13 +703,13 @@ sudo kubeadm join <master-node-ip>:<master-node-port> --token <token> --discover
 ```
 
 - Copy the config file to Jenkins master or the local file manager and save it
-- copy it and save it in documents or another folder save it as secret-file.txt
+- Copy it and save it in documents or another folder save it as secret-file.txt
 - Note: create a secret-file.txt in your file explorer save the config in it and use this at the kubernetes credential section.
 - Install Kubernetes Plugin, Once it's installed successfully
-- goto manage Jenkins --> manage credentials --> Click on Jenkins global --> add credentials
+- Goto manage Jenkins --> manage credentials --> Click on Jenkins global --> add credentials
 
 
-- Install Node_exporter on both master and worker
+**Install Node_exporter on both master and worker**
 - Let's add Node_exporter on Master and Worker to monitor the metrics
 - First, let's create a system user for Node Exporter by running the following command:
 ```bash
@@ -747,7 +746,7 @@ rm -rf node_exporter*
 sudo vim /etc/systemd/system/node_exporter.service
 ```
 
-- node_exporter.service
+- COPY the below script in **node_exporter.service** file
 ```bash
 [Unit]
 Description=Node Exporter
@@ -768,7 +767,6 @@ ExecStart=/usr/local/bin/node_exporter \
 
 [Install]
 WantedBy=multi-user.target
-
 ```
 
 - Replace Prometheus user and group to node_exporter, and update the ExecStart command.
@@ -784,13 +782,14 @@ sudo systemctl status node_exporter
 journalctl -u node_exporter -f --no-pager
 ```
 
-- At this point, we have only a single target in our Prometheus. There are many different service discovery mechanisms built into Prometheus. For example, Prometheus can dynamically discover targets in AWS, GCP, and other clouds based on the labels. In the following tutorials, I'll give you a few examples of deploying Prometheus in a cloud-specific environment. For this tutorial, let's keep it simple and keep adding static targets. Also, I have a lesson on how to deploy and manage Prometheus in the Kubernetes cluster.
-- To create a static target, you need to add job_name with static_configs. Go to Prometheus server
+- At this point, we have only a single target in our Prometheus. There are many different service discovery mechanisms built into Prometheus. For example, Prometheus can dynamically discover targets in AWS, GCP, and other clouds based on the labels. For this project, let's keep it simple and keep adding static targets.
+- To create a static target, you need to add job_name with static_configs.
+- Go to **Prometheus-Grafana** server
 ```bash
 sudo vim /etc/prometheus/prometheus.yml
 ```
 
-- prometheus.yml
+- COPY the following script in **prometheus.yml**
 ```bash
   - job_name: node_export_masterk8s
     static_configs:
@@ -799,7 +798,6 @@ sudo vim /etc/prometheus/prometheus.yml
   - job_name: node_export_workerk8s
     static_configs:
       - targets: ["<worker-ip>:9100"]
-
 ```
 - By default, Node Exporter will be exposed on port 9100.
 - Since we enabled lifecycle management via API calls, we can reload the Prometheus config without restarting the service and causing downtime.
@@ -815,10 +813,10 @@ curl -X POST http://localhost:9090/-/reload
 
 - Check the targets section
 ```bash
-http://<ip>:9090/targets
+http://<prometheus-grafana_public_ip>:9090/targets
 ```
 
-- final step to deploy on the Kubernetes cluster
+- Final step to deploy on the Kubernetes cluster
 ```bash
 stage('Deploy to kubernets'){
             steps{
@@ -840,13 +838,10 @@ kubectl get all
 kubectl get svc #use anyone
 ```
 
-
-
-# STEP 12:
-- Access from a Web browser with
+# STEP 12:: Access from a Web browser with
 - <public-ip-of-slave:service port>
 
-# output:
+# Project Screenshots (Output):
 - ![image](https://github.com/rutikdevops/DevOps-Project-11/assets/109506158/c9fd56c4-8e24-40bd-b67a-c7cce5edc16a)
 - ![image](https://github.com/rutikdevops/DevOps-Project-11/assets/109506158/0662da82-ad5c-45c1-a81b-10152b33cb44)
 - ![image](https://github.com/rutikdevops/DevOps-Project-11/assets/109506158/3d6ace51-0218-475a-8b3d-0a3813c5413f)
@@ -858,13 +853,12 @@ kubectl get svc #use anyone
 - ![image](https://github.com/rutikdevops/DevOps-Project-11/assets/109506158/0bfdfbd0-927e-4513-96bd-5029571fc8e3)
 
 
-
-# Step 13: Terminate instances.
-
+# Step 13:: Terminate all the instances created as part of this project
 
 
-# Project Reference :
+# Project Reference ::
 - https://youtu.be/pbGA-B_SCVk?feature=shared
+- https://mrcloudbook.hashnode.dev/devsecops-netflix-clone-ci-cd-with-monitoring-email
 
 
 
