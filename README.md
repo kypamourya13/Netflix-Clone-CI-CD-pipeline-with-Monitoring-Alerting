@@ -842,7 +842,9 @@ kubectl get svc #use anyone
 - <public-ip-of-slave:service port>
 
 # Project Screenshots (Output):
-![alt text](https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/prometheus.png)
+<p align="center">
+<img src="https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/prometheus.png" />
+</p>
 <p align="center">
   <img src="https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/sonarqube.png" />
 </p>
