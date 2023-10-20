@@ -842,16 +842,32 @@ kubectl get svc #use anyone
 - <public-ip-of-slave:service port>
 
 # Project Screenshots (Output):
-![alt text](https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/prometheus.png)
-![alt text](https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/sonarqube.png)
-![alt text](https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/grafana.png)
-![alt text](https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/jenkins-pipeline.png)
-![alt text](https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/grafana1.png)
-![alt text](https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/grafana2.png)
-![alt text](https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/netflix.png)
+<p align="center">
+  <img src="http://some_place.com/image.png](https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/prometheus.png" />
+</p>
+<p align="center">
+  <img src="https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/sonarqube.png" />
+</p>
+<p align="center">
+  <img src="https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/grafana.png" />
+</p>
+<p align="center">
+  <img src="https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/jenkins-pipeline.png" />
+</p>
+<p align="center">
+  <img src="https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/grafana1.png" />
+</p>
+<p align="center">
+  <img src="https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/grafana2.png" />
+</p>
+<p align="center">
+  <img src="https://github.com/kypamourya27/Netflix-Clone-CI-CD-pipeline-with-Monitoring-Alerting/blob/main/assets/netflix.png" />
+</p>
 
 
-# Step 13:: Terminate all the instances created as part of this project
+
+# Step 13::
+- Terminate all the instances created as part of this project
 
 
 # Project Reference ::
