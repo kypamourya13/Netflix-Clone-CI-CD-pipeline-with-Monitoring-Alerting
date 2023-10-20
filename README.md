@@ -648,7 +648,7 @@ stage('Deploy to container'){
 
 ```bash
 sudo apt update
-sudo apt install curl
+sudo apt install curl -y
 curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
@@ -706,6 +706,11 @@ sudo kubeadm join <master-node-ip>:<master-node-port> --token <token> --discover
 - Copy it and save it in documents or another folder save it as secret-file.txt
 - Note: create a secret-file.txt in your file explorer save the config in it and use this at the kubernetes credential section.
 - Install Kubernetes Plugin, Once it's installed successfully
+  - K8s
+  - K8s Credentials
+  - K8s Client API
+  - K8s CLI
+  - K8s Credentials Provider
 - Goto manage Jenkins --> manage credentials --> Click on Jenkins global --> add credentials
 
 
@@ -840,6 +845,7 @@ kubectl get svc #use anyone
 
 # STEP 12:: Access from a Web browser with
 - <public-ip-of-slave:service port>
+
 
 # Project Screenshots (Output):
 <p align="center">
